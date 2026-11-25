@@ -1,4 +1,5 @@
 ﻿using Internship_3_OOP.Data;
+using Internship_3_OOP.Menus;
 
 namespace Internship_3_OOP
 {
@@ -8,6 +9,8 @@ namespace Internship_3_OOP
         {
             Hotel hotel = new Hotel();
             InitialData.Initialize(hotel);
+
+           new MainMenu(hotel).Run();
 
         }
     }
