@@ -1,0 +1,1 @@
+﻿enum ShiftType { Morning, Afternoon, Night}

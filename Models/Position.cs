@@ -1,0 +1,1 @@
+﻿enum Position { Receptionist, Housekeeper, Cook}

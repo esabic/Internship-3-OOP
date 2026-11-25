@@ -19,6 +19,11 @@ namespace Internship_3_OOP.Models
         {
             return Password == password;
         }
+
+        public bool CheckEmail(string email)
+        {
+            return Email == email;
+        }
         public Guest(string firstName, string lastName, int birthYear, string email, string password)
         {
             FirstName = firstName;
@@ -28,6 +33,6 @@ namespace Internship_3_OOP.Models
             Password = password;
         }
 
-
+        public string FullName=>$"{FirstName} {LastName}";
     }
 }
