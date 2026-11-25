@@ -1,0 +1,1 @@
+﻿enum RoomCategory { Standard, Deluxe, Suite}

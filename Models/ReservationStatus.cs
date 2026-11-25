@@ -1,0 +1,1 @@
+﻿enum ReservationStatus { Confirmed, Cancelled, Completed};
