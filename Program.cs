@@ -1,10 +1,14 @@
-﻿namespace Internship_3_OOP
+﻿using Internship_3_OOP.Data;
+
+namespace Internship_3_OOP
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Hotel hotel = new Hotel();
+            InitialData.Initialize(hotel);
+
         }
     }
 }
