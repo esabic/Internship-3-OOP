@@ -43,12 +43,12 @@ namespace Internship_3_OOP.Menus
             const decimal MinPricePerNight = 50.00M;
 
             int roomNumber= AddRoomNumber();
-            int floorNumber = Input.ReadInt($"Write floor number in range({MinFloor}-{MaxFloor}):", MinFloor, MaxFloor);
+            int floorNumber = Input.ReadInt($"Write floor number in range({MinFloor}-{MaxFloor}): ", MinFloor, MaxFloor);
             RoomCategory category = Input.ReadRoomCategory();
-            int capacity= Input.ReadInt($"Write room capacity in range({MinCapacity}-{MaxCapacity}):", MinCapacity, MaxCapacity);
-            decimal pricePerNight = Input.ReadDecimal($"Write room price per night in range ({MinPricePerNight} euros -{MaxPricePerNight} euros):", MinPricePerNight, MaxPricePerNight);
+            int capacity= Input.ReadInt($"Write room capacity in range({MinCapacity}-{MaxCapacity}): ", MinCapacity, MaxCapacity);
+            decimal pricePerNight = Input.ReadDecimal($"Write room price per night in range ({MinPricePerNight} euros -{MaxPricePerNight} euros): ", MinPricePerNight, MaxPricePerNight);
 
-            if (Confirmation.Ask($"Do you want to add room {roomNumber}?\n"))
+            if (Confirmation.Ask($"Do you want to add room {roomNumber}?"))
             {
                 Room room = new Room(roomNumber, floorNumber, category, capacity, pricePerNight);
                 _hotel.Rooms.Add(room);

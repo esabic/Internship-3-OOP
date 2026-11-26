@@ -4,6 +4,7 @@ using Internship_3_OOP.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace Internship_3_OOP.Menus
         public GuestMenu(Hotel hotel) : base(hotel) { }
 
 
-        private Guest Login()
+        private Guest? Login()
         {
             while (true)
             {
@@ -30,10 +31,60 @@ namespace Internship_3_OOP.Menus
                     }
                 }
 
-                Console.WriteLine("Wrong email or password. Try again.");
+                Console.WriteLine("Wrong email or password.");
+                if(!Confirmation.Ask("Do you want to try again?"))
+                {
+                    return null;
+                }
 
             } 
             
+        }
+
+        private void Register()
+        {
+            int minBirthYear = DateTime.Now.Year-126;
+            int maxBirthYear = DateTime.Now.Year;
+
+            string firstName = Input.ReadNonEmpty("first name");
+            string lastName = Input.ReadNonEmpty("last name");
+            int birthYear = Input.ReadInt("Write birth year: ", minBirthYear, maxBirthYear);
+
+            string email;
+            while (true)
+            {
+                email = Input.ReadNonEmpty("email");
+                if(!_hotel.Guests.Any(guest => string.Equals(guest.Email,email)))
+                {
+                   break;
+                }
+
+                Console.WriteLine("INVALID INPUT! Email already exists.\n");
+            }
+
+            string password;
+            while (true)
+            {
+                password = Input.ReadNonEmpty("password (min 6 characters)");
+                if (password.Length >=  6)
+                {
+                    break;
+                }
+
+                Console.WriteLine("INVALID INPUT! Password must have at least 6 characters.\n");
+            }
+
+            if (Confirmation.Ask($"Do you want to add guest: {firstName} {lastName}"))
+            {
+                Guest guest = new Guest(firstName, lastName, birthYear, email, password);
+                _hotel.Guests.Add(guest);
+                Console.WriteLine("Guest added successfully.\n");
+            }
+            else
+            {
+                Console.WriteLine("Adding guest cancelled.\n");
+            }
+
         }
 
         public override void Run()
@@ -53,13 +104,16 @@ namespace Internship_3_OOP.Menus
                     {
                         case '1':
                             Console.WriteLine();
-                            ///////////
+                            Register();
                             break;
                         case '2':
                             Console.WriteLine();
-                            Guest guest = Login();
-                            new GuestSessionMenu(_hotel, guest).Run();
-
+                            Guest? guestLogin = Login();
+                            if(guestLogin!=null)
+                            {
+                                new GuestSessionMenu(_hotel, guestLogin).Run();
+                            }
+                            
                             break;
                         case '3':
                             Console.WriteLine();
