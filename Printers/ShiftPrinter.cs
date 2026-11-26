@@ -38,5 +38,16 @@ namespace Internship_3_OOP.Printers
                 }
 
         }
+
+        public void PrintNumbered(List<Employee> employees,string prompt)
+        {
+            Console.WriteLine();
+            Console.WriteLine(prompt);
+            for(int i =0; i<employees.Count; i++)
+            {
+              
+                Console.WriteLine($"[{i+1}] {employees[i].FullName} {employees[i].BirthYear}");
+            }
+        }
     }
 }
