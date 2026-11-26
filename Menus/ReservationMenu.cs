@@ -1,4 +1,5 @@
 ﻿using Internship_3_OOP.Data;
+using Internship_3_OOP.Printers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace Internship_3_OOP.Menus
                     {
                         case '1':
                             Console.WriteLine();
-                            ///////////
+                            new ReservationPrinter(_hotel).PrintAll();
                             break;
                         case '2':
                             Console.WriteLine();
