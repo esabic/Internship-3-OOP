@@ -1,5 +1,6 @@
 ﻿using Internship_3_OOP.Data;
 using Internship_3_OOP.Models;
+using Internship_3_OOP.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -39,6 +40,17 @@ namespace Internship_3_OOP.Printers
 
             Console.WriteLine($"[{reservation.Id}] Room {reservation.Room.RoomNumber} ({reservation.Room.Category}) | {reservation.CheckInDate:yyyy-MM-dd} -> {reservation.CheckOutDate:yyyy-MM-dd} | {reservation.Nights} nights | {reservation.TotalPrice} euros | {reservation.Status}");
 
+        }
+
+        public void PrintNumbered(List<Reservation> reservation)
+        { 
+            for (int i = 0; i < reservation.Count; i++)
+            {
+             
+                Console.Write($"{i + 1} ");
+                Print(reservation[i]);
+                Console.WriteLine();
+            }
         }
 
     }

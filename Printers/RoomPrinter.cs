@@ -37,5 +37,16 @@ namespace Internship_3_OOP.Printers
             Console.WriteLine($"[{room.Id}] Room {room.RoomNumber} | {room.FloorNumber} floor | {room.Category} | {room.Capacity} | {room.PricePerNight} euro/night | number of reservations {numberOfReservations}");
             
         }
+
+        public void PrintNumbered(List<Room> rooms)
+        {
+            var service = new ReservationService(_hotel);
+            for (int i = 0; i < rooms.Count; i++)
+            {
+                Console.WriteLine($"{i+1} ");
+                Print(rooms[i], service.NumberOfReservations(rooms[i]));
+                Console.WriteLine();
+            }
+        }
     }
 }
