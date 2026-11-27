@@ -15,6 +15,7 @@ namespace Internship_3_OOP.Menus
     {
         public ReservationMenu(Hotel hotel) : base(hotel) { }
 
+        private const int MinDaysBeforeCheckIn = 2;
         private void SearchById()
         {
             Guid id = Input.ReadId("Write id of the reservation: ");
@@ -59,7 +60,7 @@ namespace Internship_3_OOP.Menus
                 Console.WriteLine("SEARCH RESERVATION MENU\n\n");
                 Console.WriteLine("1 - Search by Id\n" +
                                   "2 - Search by last name of the guest \n" +
-                                  "3 - Back to room menu\n\n");
+                                  "3 - Back to reservation menu\n\n");
 
                 Console.Write("Option: ");
                 if (char.TryParse(Console.ReadLine(), out char option))
@@ -148,6 +149,54 @@ namespace Internship_3_OOP.Menus
             }
 
         }
+
+        private void DeleteReservation()
+        {
+            if (_hotel.Reservations.Count == 0)
+            {
+                Console.WriteLine("No reservations found.\n");
+                return;
+            }
+            new ReservationPrinter(_hotel).PrintAll();
+
+            Guid id = Input.ReadId("Write id: ");
+            Reservation? reservation = _hotel.Reservations.FirstOrDefault(r => r.Id == id);
+
+            if (reservation == null)
+            {
+                Console.WriteLine($"Reservation with id ({id}) does not exist.\n");
+                return;
+            }
+
+            if (reservation.Status == ReservationStatus.Completed)
+            {
+                Console.WriteLine($"Completed reservation cannot be deleted.\n");
+                return;
+            }
+
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+            int daysUntilCheckIn = reservation.CheckInDate.DayNumber- today.DayNumber;
+
+          
+
+            if (daysUntilCheckIn < MinDaysBeforeCheckIn)
+            {
+                Console.WriteLine("Cannot delete, arrival is in less than 48 hours.\n");
+                return;
+            }
+
+            if (Confirmation.Ask($"Do you want to delete this reservation?"))
+            {
+                
+                _hotel.Reservations.Remove(reservation);
+                Console.WriteLine("Reservation deleted successfully.\n");
+            }
+            else
+            {
+                Console.WriteLine("Deleting reservation cancelled.\n");
+            }
+
+        }
         public override void Run()
         {
             while (true)
@@ -184,7 +233,7 @@ namespace Internship_3_OOP.Menus
                             break;
                         case '5':
                             Console.WriteLine();
-                            /////////////////////////
+                            DeleteReservation();
                             break;
                         case '6':
                             Console.WriteLine();
