@@ -135,7 +135,7 @@ namespace Internship_3_OOP.Menus
 
             int nights = checkOutDate.DayNumber-checkInDate.DayNumber;
             decimal totalPrice = nights * chosenRoom.PricePerNight;
-            Console.WriteLine($"Total price per night is {totalPrice} euros");
+            Console.WriteLine($"Total price is {totalPrice} euros");
 
             if (Confirmation.Ask("Do you want to reserve room?"))
             {
@@ -197,6 +197,57 @@ namespace Internship_3_OOP.Menus
             }
 
         }
+
+        private void EditReservation()
+        {
+            if (_hotel.Reservations.Count == 0)
+            {
+                Console.WriteLine("No reservations found.\n");
+                return;
+            }
+            new ReservationPrinter(_hotel).PrintAll();
+
+            Guid id = Input.ReadId("Write id: ");
+            Reservation? reservation = _hotel.Reservations.FirstOrDefault(r => r.Id == id);
+
+            if (reservation == null)
+            {
+                Console.WriteLine($"Reservation with id ({id}) does not exist.\n");
+                return;
+            }
+
+            if (reservation.Status != ReservationStatus.Confirmed)
+            {
+                Console.WriteLine($"Not confirmed reservation cannot be edited.\n");
+                return;
+            }
+
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+            DateOnly newCheckIn = Input.ReadDate("New check in date: ", today);
+            DateOnly newCheckOut = Input.ReadDate("New check out date: ", newCheckIn);
+
+            bool isOccupied = _hotel.Reservations.Any(r => r!= reservation && r.Room == reservation.Room && r.Status==ReservationStatus.Confirmed && r.CheckInDate < newCheckOut && r.CheckOutDate > newCheckIn);
+            if (isOccupied)
+            {
+                Console.WriteLine("Room is not free in that period!\n");
+                return;
+            }
+
+            int newNights = newCheckOut.DayNumber-newCheckIn.DayNumber;
+            decimal newTotal = newNights*reservation.Room.PricePerNight;
+            Console.WriteLine($"New total price: {newTotal} euros.\n");
+
+            if (Confirmation.Ask($"Do you want to edit this reservation?"))
+            {
+
+                reservation.ChangeDates(newCheckIn, newCheckOut);
+                Console.WriteLine("Reservation edited successfully.\n");
+            }
+            else
+            {
+                Console.WriteLine("Editing reservation cancelled.\n");
+            }
+        }
         public override void Run()
         {
             while (true)
@@ -228,8 +279,7 @@ namespace Internship_3_OOP.Menus
                             SearchReservation();
                             break;
                         case '4':
-                            Console.WriteLine();
-                            ////////////////////
+                            EditReservation();
                             break;
                         case '5':
                             Console.WriteLine();
