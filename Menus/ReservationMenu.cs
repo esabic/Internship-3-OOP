@@ -91,6 +91,63 @@ namespace Internship_3_OOP.Menus
                 }
             }
         }
+
+        private void AddReservation()
+        { 
+            DateOnly today=DateOnly.FromDateTime(DateTime.Now);
+
+            if(_hotel.Guests.Count == 0)
+            {
+                Console.WriteLine("No guests found.\n");
+                return;
+            }
+
+            for (int i = 0; i < _hotel.Guests.Count; i++)
+            {
+                Console.WriteLine($"{i + 1} {_hotel.Guests[i].FullName} | {_hotel.Guests[i].Email} ");
+
+            }
+            int option = Input.ReadInt("Choose guest: ", 1, _hotel.Guests.Count);
+            Guest chosenGuest = _hotel.Guests[option - 1];
+
+            DateOnly checkInDate = Input.ReadDate("Write check in date: ", today);
+            DateOnly checkOutDate = Input.ReadDate("Write check out date: ",checkInDate);
+
+            List<Room > available = new List<Room>();
+
+            foreach(Room room in _hotel.Rooms)
+            {
+                bool isOccupied = _hotel.Reservations.Any(r => r.Room == room && r.Status == ReservationStatus.Confirmed && r.CheckInDate < checkOutDate && r.CheckOutDate > checkInDate);
+                if (!isOccupied)
+                {
+                    available.Add(room);
+                }
+            }
+            if(available.Count == 0)
+            {
+                Console.WriteLine("No free rooms for that period.\n");
+                return;
+            }
+            new RoomPrinter(_hotel).PrintNumbered(available);
+            int choice = Input.ReadInt("Choose room: ", 1, available.Count);
+            Room chosenRoom = available[choice-1];
+
+            int nights = checkOutDate.DayNumber-checkInDate.DayNumber;
+            decimal totalPrice = nights * chosenRoom.PricePerNight;
+            Console.WriteLine($"Total price per night is {totalPrice} euros");
+
+            if (Confirmation.Ask("Do you want to reserve room?"))
+            {
+                Reservation reservation = new Reservation(chosenGuest, chosenRoom, checkInDate, checkOutDate);
+                _hotel.Reservations.Add(reservation);
+                Console.WriteLine("Reservation created successfully.\n");
+            }
+            else
+            {
+                Console.WriteLine("Reservation cancelled.\n");
+            }
+
+        }
         public override void Run()
         {
             while (true)
@@ -115,7 +172,7 @@ namespace Internship_3_OOP.Menus
                             break;
                         case '2':
                             Console.WriteLine();
-                            ////////////////////
+                            AddReservation();
                             break;
                         case '3':
                             Console.WriteLine();
