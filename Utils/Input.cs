@@ -11,6 +11,20 @@ namespace Internship_3_OOP.Utils
 
     internal static class Input
     {
+        public static Guid ReadId(string prompt)
+        {
+
+            while (true)
+            {
+                Console.WriteLine();
+                Console.Write(prompt);
+                if (Guid.TryParse(Console.ReadLine()?.Trim(), out Guid data))
+                {
+                    return data;
+                }
+                Console.WriteLine($"Invalid input! Input must be in format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.");
+            }
+        }
         public static string ReadNonEmpty(string prompt)
         {
             while (true)

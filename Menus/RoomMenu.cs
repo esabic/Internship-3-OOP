@@ -1,10 +1,12 @@
 ﻿using Internship_3_OOP.Data;
 using Internship_3_OOP.Models;
 using Internship_3_OOP.Printers;
+using Internship_3_OOP.Services;
 using Internship_3_OOP.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,12 +14,13 @@ namespace Internship_3_OOP.Menus
 {
     internal class RoomMenu:BaseMenu
     {
+        private const int MaxRoomNumber = 599;
+        private const int MinRoomNumber = 100;
         public RoomMenu(Hotel hotel) : base(hotel) { }
 
         private int AddRoomNumber()
         {
-            const int MaxRoomNumber = 599;
-            const int MinRoomNumber = 100;
+            
 
             while (true) 
             {
@@ -58,6 +61,58 @@ namespace Internship_3_OOP.Menus
             {
                 Console.WriteLine("Adding room cancelled.\n");
             }
+
+        }
+
+
+        private void DeleteById()
+        {
+            //////////////
+        }
+
+        private void DeleteByRoomNumber()
+        {
+            ////////////////////////
+        }
+        private void DeleteRoom()
+        {
+            while (true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("DELETE ROOM MENU\n\n");
+                Console.WriteLine("1 - Delete by Id\n" +
+                                  "2 - Delete by room number\n" +
+                                  "3 - Back to room menu\n\n");
+
+                Console.Write("Option: ");
+                if (char.TryParse(Console.ReadLine(), out char option))
+                {
+                    switch (option)
+                    {
+                        case '1':
+                            Console.WriteLine();
+                            DeleteById();
+                            break;
+                        case '2':
+                            Console.WriteLine();
+                           DeleteByRoomNumber();
+                            break;
+                        case '3':
+                            Console.WriteLine();
+                            Console.WriteLine("Returning to the room menu........\n");
+                            return;
+                        default:
+                            Console.WriteLine();
+                            Console.WriteLine("INVALID INPUT! You need to choose between (1-3).\n\n");
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("INVALID INPUT! You need to enter a single character (1-3).\n\n ");
+                }
+            }
         }
         public override void Run()
         {
@@ -86,11 +141,11 @@ namespace Internship_3_OOP.Menus
                             break;
                         case '3':
                             Console.WriteLine();
-                            /////////////////////////
+                            new RoomSearchMenu(_hotel).Run();
                             break;
                         case '4':
                             Console.WriteLine();
-                            /////////////////////////
+                            DeleteRoom();
                             break;
                         case '5':
                             Console.WriteLine();

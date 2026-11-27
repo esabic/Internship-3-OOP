@@ -14,7 +14,7 @@ namespace Internship_3_OOP.Utils
             while (true)
             {
                 Console.WriteLine();
-                Console.Write($"{question} (y/n):\n");
+                Console.Write($"{question} (y/n):");
                 if (char.TryParse(Console.ReadLine()?.Trim(), out char conf))
                 {
                     if (char.ToLower(conf) == 'y')

@@ -1,6 +1,7 @@
 ﻿using Internship_3_OOP.Data;
 using Internship_3_OOP.Models;
 using Internship_3_OOP.Printers;
+using Internship_3_OOP.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Internship_3_OOP.Menus
         { 
             _guest=guest;
         }
+
         public override void Run()
         {
             while (true)
@@ -39,11 +41,11 @@ namespace Internship_3_OOP.Menus
                             break;
                         case '2':
                             Console.WriteLine();
-                            ////////////////////
+                            //////////////////////////////
                             break;
                         case '3':
                             Console.WriteLine();
-                            /////////////////////////
+                            new RoomSearchMenu(_hotel).Run();
                             break;
                         case '4':
                             Console.WriteLine();
