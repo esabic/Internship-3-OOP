@@ -64,15 +64,69 @@ namespace Internship_3_OOP.Menus
 
         }
 
+        private void DelteRoomIfAllowed(Room room)
+        {
+            bool isActive = _hotel.Reservations.Any(r => r.Room == room && r.Status == ReservationStatus.Confirmed);
+
+            if (isActive)
+            {
+                Console.WriteLine("Room has active reservation and cannot be deleted.\n");
+                return;
+            }
+
+            if (Confirmation.Ask($"Do you want to delete room ?"))
+            {
+                _hotel.Reservations.RemoveAll(r => r.Room == room);
+                _hotel.Rooms.Remove(room);
+                Console.WriteLine("Room deleted successfully.\n");
+            }
+            else
+            {
+                Console.WriteLine("Deleting room cancelled.\n");
+            }
+        }
+
 
         private void DeleteById()
         {
-            //////////////
+            if(_hotel.Rooms.Count == 0)
+            {
+                Console.WriteLine("No rooms found.\n");
+                return;
+            }
+            new RoomPrinter(_hotel).PrintAll();
+
+            Guid id = Input.ReadId("Write id: ");
+            Room? room = _hotel.Rooms.FirstOrDefault(r => r.Id == id);
+
+            if (room == null)
+            {
+                Console.WriteLine($"Room with id ({id}) does not exist.\n");
+                return;
+            }
+        
+            DelteRoomIfAllowed (room);
         }
 
         private void DeleteByRoomNumber()
         {
-            ////////////////////////
+            if (_hotel.Rooms.Count == 0)
+            {
+                Console.WriteLine("No rooms found.\n");
+                return;
+            }
+            new RoomPrinter(_hotel).PrintAll();
+
+            int roomNumber = Input.ReadInt("Write room number: ", MinRoomNumber, MaxRoomNumber);
+            Room? room = _hotel.Rooms.FirstOrDefault(r => r.RoomNumber == roomNumber);
+
+            if (room == null)
+            {
+                Console.WriteLine($"Room with number ({roomNumber}) does not exist.\n");
+                return;
+            }
+
+            DelteRoomIfAllowed (room);
         }
         private void DeleteRoom()
         {
